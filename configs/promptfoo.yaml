@@ -54,6 +54,3 @@ tests:
           5. States the exact price (should be around 7,500 Euro or provide pricing information)
           6. Response is in english language
           7. Professional and helpful tone
-          
-          Score 1 if ALL required elements are present and accurate.
-          Score 0 if any required element is missing or incorrect.
