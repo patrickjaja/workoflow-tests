@@ -1,0 +1,38 @@
+{
+  "name": "n8n-agent-e2e-tests",
+  "version": "1.0.0",
+  "description": "E2E testing suite for n8n webhook agent with semantic validation",
+  "main": "index.js",
+  "scripts": {
+    "test:e2e": "docker-compose run promptfoo-shell promptfoo eval -c configs/promptfoo.yaml --no-cache -o test-results/output.html",
+    "test:watch": "docker-compose run promptfoo-shell promptfoo eval -c configs/promptfoo.yaml --watch",
+    "test:view": "docker-compose run -p 8080:8080 promptfoo-shell promptfoo view",
+    "test:export": "docker-compose run promptfoo-shell promptfoo export -o test-results/report.html",
+    "test:filter": "docker-compose run promptfoo-shell promptfoo eval -c configs/promptfoo.yaml --filter",
+    "test:dry-run": "docker-compose run promptfoo-shell promptfoo eval -c configs/promptfoo.yaml --dry-run",
+    "test:verbose": "docker-compose run promptfoo-shell promptfoo eval -c configs/promptfoo.yaml -v",
+    "test:repeat": "docker-compose run promptfoo-shell promptfoo eval -c configs/promptfoo.yaml --repeat",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:test": "docker-compose run promptfoo-shell",
+    "docker:logs": "docker-compose logs -f promptfoo-shell",
+    "docker:down": "docker-compose down",
+    "docker:clean": "docker-compose down -v && rm -rf test-results/*",
+    "docker:shell": "docker-compose run promptfoo-shell sh"
+  },
+  "keywords": [
+    "n8n",
+    "testing",
+    "e2e",
+    "promptfoo",
+    "semantic-testing"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "promptfoo": "^0.114.7"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}

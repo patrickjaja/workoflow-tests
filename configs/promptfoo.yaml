@@ -1,0 +1,59 @@
+providers:
+  # n8n webhook endpoint
+  - id: http
+    label: n8n-webhook
+    config:
+      url: '{{ env.N8N_WEBHOOK_URL }}'
+      apiKey: '{{ env.AZURE_API_KEY }}'
+      apiHost: '{{ env.AZURE_API_HOST }}'
+      apiVersion: '{{ env.AZURE_API_VERSION }}'
+      method: 'POST'
+      headers:
+        'Content-Type': 'application/json'
+        'Accept': 'application/json'
+      body:
+        text: '{{query}}'
+        type: 'message'
+        channelId: 'msteams'
+        timestamp: '{{__currentDate__}}'
+        localTimestamp: '{{__currentDate__}}'
+        id: '{{messageId}}'
+        from:
+          name: 'Test User'
+          aadObjectId: 'test-user-id'
+        conversation:
+          conversationType: 'personal'
+          tenantId: 'test-tenant-id'
+          id: '{{messageId}}'
+        locale: '{{locale}}'
+        localTimezone: 'Europe/Berlin'
+      transformResponse: 'json.response || json.text || json'
+
+prompts:
+  - '{{query}}'
+
+tests:
+  - description: "Test training inquiry in German"
+    vars:
+      query: "is there a special training related to testing that valantic offers? Whats a person of contact and whats its price?"
+      timestamp: "2025-01-06T10:00:00.000Z"
+      messageId: "test-msg-001"
+      locale: "en-US"
+    assert:
+      - type: llm-rubric
+        provider:
+          id: azure:chat:gpt-4o-mini
+        value: |
+          The response should comprehensively answer the user's question about manual testing training.
+          
+          Required elements:
+          1. Confirms that manual testing training is available
+          2. Lists specific training topics/content (e.g., regression testing, functional testing, UI testing, exploratory testing)
+          3. Provides the contact person's name (should be Michael Blum or another specific person)
+          4. Includes contact details (email and/or phone number)
+          5. States the exact price (should be around 7,500 Euro or provide pricing information)
+          6. Response is in english language
+          7. Professional and helpful tone
+          
+          Score 1 if ALL required elements are present and accurate.
+          Score 0 if any required element is missing or incorrect.

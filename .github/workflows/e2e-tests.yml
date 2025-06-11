@@ -1,0 +1,84 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run tests every day at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Install dependencies
+      run: |
+        npm ci
+        npm install -g promptfoo
+    
+    - name: Run E2E tests
+      env:
+        N8N_WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
+        AZURE_API_KEY: ${{ secrets.AZURE_API_KEY }}
+        AZURE_API_HOST: ${{ secrets.AZURE_API_HOST }}
+        AZURE_DEPLOYMENT_NAME: ${{ secrets.AZURE_DEPLOYMENT_NAME }}
+        AZURE_API_VERSION: ${{ secrets.AZURE_API_VERSION }}
+      run: npm run test:e2e
+    
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: test-results/
+    
+    - name: Generate test report
+      if: always()
+      run: npm run test:export || true
+    
+    - name: Upload test report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-report
+        path: test-results/report.html
+
+  docker-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Create .env file
+      run: |
+        echo "N8N_WEBHOOK_URL=${{ secrets.N8N_WEBHOOK_URL }}" >> .env
+        echo "AZURE_API_KEY=${{ secrets.AZURE_API_KEY }}" >> .env
+        echo "AZURE_API_HOST=${{ secrets.AZURE_API_HOST }}" >> .env
+        echo "AZURE_DEPLOYMENT_NAME=${{ secrets.AZURE_DEPLOYMENT_NAME }}" >> .env
+        echo "AZURE_API_VERSION=${{ secrets.AZURE_API_VERSION }}" >> .env
+    
+    - name: Build Docker image
+      run: docker-compose build
+    
+    - name: Run Docker tests
+      run: docker-compose run promptfoo-tester
+    
+    - name: Upload Docker test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: docker-test-results
+        path: test-results/

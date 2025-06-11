@@ -1,0 +1,27 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Install bash and other useful tools for interactive use
+RUN apk add --no-cache bash curl jq vim
+
+# Copy package files first for better caching
+COPY package*.json ./
+
+# Install dependencies inside container
+RUN npm install && npm install -g promptfoo@^0.114.7
+
+# Create directories
+RUN mkdir -p /app/test-results /app/test-data /app/configs /app/scripts /app/n8n_example_requests
+
+# Copy all project files
+COPY . .
+
+# Ensure test results directory is writable
+RUN chmod -R 777 /app/test-results
+
+# Set bash as default shell
+SHELL ["/bin/bash", "-c"]
+
+# Default to bash for interactive use
+CMD ["/bin/bash"]

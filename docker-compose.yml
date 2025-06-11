@@ -1,0 +1,42 @@
+services:
+  # Interactive shell service for manual testing
+  promptfoo-shell:
+    build: 
+      context: .
+      dockerfile: Dockerfile.test
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - N8N_WEBHOOK_URL=${N8N_WEBHOOK_URL:-http://localhost/webhook/016d8b95-d5a5-4ac6-acb5-359a547f642f}
+      - AZURE_API_KEY=${AZURE_API_KEY}
+      - AZURE_API_HOST=${AZURE_API_HOST}
+      - AZURE_DEPLOYMENT_NAME=${AZURE_DEPLOYMENT_NAME}
+      - AZURE_API_VERSION=${AZURE_API_VERSION}
+      - TEST_ENVIRONMENT=${TEST_ENVIRONMENT:-development}
+      - SEMANTIC_THRESHOLD=${SEMANTIC_THRESHOLD:-0.85}
+    volumes:
+      - ./:/app
+    ports:
+      - "15500:15500"
+    networks:
+      - testing-network
+    env_file:
+      - .env
+    stdin_open: true
+    tty: true
+    command: /bin/bash
+
+  test-reporter:
+    image: nginx:alpine
+    env_file:
+      - .env
+    ports:
+      - "8080:80"
+    volumes:
+      - ./test-results:/usr/share/nginx/html
+    networks:
+      - testing-network
+
+networks:
+  testing-network:
+    driver: bridge
