@@ -74,9 +74,10 @@ pipeline {
     
     post {
         always {
-            node('any') {
-                // Clean workspace
-                deleteDir()
+            script {
+                if (currentBuild.rawBuild.getExecutor() != null) {
+                    deleteDir()
+                }
             }
         }
         success {
