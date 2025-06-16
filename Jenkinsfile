@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent none
     
     environment {
         // Azure OpenAI credentials
@@ -10,8 +10,7 @@ pipeline {
         
         // n8n webhook configuration
         N8N_WEBHOOK_URL = credentials('n8n-webhook-url')
-        N8N_BASIC_AUTH_USERNAME = credentials('n8n-basic-auth-username')
-        N8N_BASIC_AUTH_PASSWORD = credentials('n8n-basic-auth-password')
+        N8N_BASIC_AUTH_ENCODED = credentials('n8n-basic-auth-encoded')
 
         // Test configuration
         SEMANTIC_THRESHOLD = '0.8'
@@ -20,12 +19,14 @@ pipeline {
     
     stages {
         stage('Checkout') {
+            agent any
             steps {
                 checkout scm
             }
         }
         
         stage('Setup') {
+            agent any
             steps {
                 sh '''
                     echo "Installing dependencies..."
@@ -35,6 +36,7 @@ pipeline {
         }
         
         stage('Validate Configuration') {
+            agent any
             steps {
                 sh '''
                     echo "Validating test configuration..."
@@ -44,6 +46,7 @@ pipeline {
         }
         
         stage('Run E2E Tests') {
+            agent any
             steps {
                 sh '''
                     echo "Running E2E tests..."
@@ -53,6 +56,7 @@ pipeline {
         }
         
         stage('Generate Test Report') {
+            agent any
             steps {
                 sh '''
                     echo "Exporting test results..."
@@ -70,8 +74,10 @@ pipeline {
     
     post {
         always {
-            // Clean workspace using deleteDir() as fallback for cleanWs()
-            deleteDir()
+            node {
+                // Clean workspace
+                deleteDir()
+            }
         }
         success {
             echo 'E2E tests completed successfully!'
