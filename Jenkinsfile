@@ -73,13 +73,13 @@ pipeline {
     }
     
     post {
-        always {
-            script {
-                if (currentBuild.rawBuild.getExecutor() != null) {
-                    deleteDir()
-                }
-            }
-        }
+//         always {
+//             script {
+//                 if (currentBuild.rawBuild.getExecutor() != null) {
+//                     deleteDir()
+//                 }
+//             }
+//         }
         success {
             echo 'E2E tests completed successfully!'
         }
