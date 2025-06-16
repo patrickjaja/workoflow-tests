@@ -10,7 +10,9 @@ pipeline {
         
         // n8n webhook configuration
         N8N_WEBHOOK_URL = credentials('n8n-webhook-url')
-        
+        N8N_BASIC_AUTH_USERNAME = credentials('n8n-basic-auth-username')
+        N8N_BASIC_AUTH_PASSWORD = credentials('n8n-basic-auth-password')
+
         // Test configuration
         SEMANTIC_THRESHOLD = '0.8'
         TEST_TIMEOUT = '30000'
@@ -68,7 +70,8 @@ pipeline {
     
     post {
         always {
-            cleanWs()
+            // Clean workspace using deleteDir() as fallback for cleanWs()
+            deleteDir()
         }
         success {
             echo 'E2E tests completed successfully!'

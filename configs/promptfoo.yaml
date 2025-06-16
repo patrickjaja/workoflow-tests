@@ -11,6 +11,7 @@ providers:
       headers:
         'Content-Type': 'application/json'
         'Accept': 'application/json'
+        'Authorization': 'Basic {{ env.N8N_BASIC_AUTH_ENCODED }}'
       body:
         text: '{{query}}'
         type: 'message'
