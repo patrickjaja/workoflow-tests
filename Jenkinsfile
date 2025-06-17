@@ -15,6 +15,15 @@ pipeline {
             }
         }
         
+        stage('Setup Environment') {
+            steps {
+                sh '''
+                    echo "Creating empty .env file..."
+                    touch .env
+                '''
+            }
+        }
+        
         stage('Build Docker Image') {
             steps {
                 sh '''
@@ -65,6 +74,7 @@ pipeline {
                 docker-compose down || true
                 # Clean workspace
                 rm -rf node_modules || true
+                rm -f .env || true
             '''
         }
         success {
