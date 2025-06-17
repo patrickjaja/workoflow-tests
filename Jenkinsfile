@@ -1,56 +1,52 @@
 pipeline {
-    agent none
+    agent any
     
     environment {
         // Test configuration (other vars are inherited from Jenkins job config)
         SEMANTIC_THRESHOLD = '0.8'
         TEST_TIMEOUT = '30000'
+        DOCKER_BUILDKIT = '1'
     }
     
     stages {
         stage('Checkout') {
-            agent any
             steps {
                 checkout scm
             }
         }
         
-        stage('Setup') {
-            agent any
+        stage('Build Docker Image') {
             steps {
                 sh '''
-                    echo "Installing dependencies..."
-                    npm ci
+                    echo "Building Docker image..."
+                    docker-compose build promptfoo-shell
                 '''
             }
         }
         
         stage('Validate Configuration') {
-            agent any
             steps {
                 sh '''
                     echo "Validating test configuration..."
-                    npm run test:dry-run
+                    docker-compose run --rm promptfoo-shell npm run test:dry-run
                 '''
             }
         }
         
         stage('Run E2E Tests') {
-            agent any
             steps {
                 sh '''
                     echo "Running E2E tests..."
-                    npm run test:e2e
+                    docker-compose run --rm promptfoo-shell npm run test:e2e
                 '''
             }
         }
         
         stage('Generate Test Report') {
-            agent any
             steps {
                 sh '''
                     echo "Exporting test results..."
-                    npm run test:export
+                    docker-compose run --rm promptfoo-shell npm run test:export
                 '''
                 
                 // Archive test results
@@ -63,13 +59,14 @@ pipeline {
     }
     
     post {
-//         always {
-//             script {
-//                 if (currentBuild.rawBuild.getExecutor() != null) {
-//                     deleteDir()
-//                 }
-//             }
-//         }
+        always {
+            sh '''
+                # Clean up Docker containers
+                docker-compose down || true
+                # Clean workspace
+                rm -rf node_modules || true
+            '''
+        }
         success {
             echo 'E2E tests completed successfully!'
         }
