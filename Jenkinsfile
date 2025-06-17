@@ -20,6 +20,7 @@ pipeline {
                 sh '''
                     echo "Creating empty .env file..."
                     touch .env
+                    export
                 '''
             }
         }
