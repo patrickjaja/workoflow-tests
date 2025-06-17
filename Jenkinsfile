@@ -18,9 +18,21 @@ pipeline {
         stage('Setup Environment') {
             steps {
                 sh '''
-                    echo "Creating empty .env file..."
-                    touch .env
-                    export
+                    echo "Creating .env file from Jenkins environment variables..."
+                    cat > .env << EOF
+N8N_WEBHOOK_URL=$N8N_WEBHOOK_URL
+N8N_BASIC_AUTH_ENCODED=$N8N_BASIC_AUTH_ENCODED
+AZURE_API_KEY=$AZURE_API_KEY
+AZURE_API_HOST=$AZURE_API_HOST
+AZURE_API_VERSION=$AZURE_API_VERSION
+AZURE_DEPLOYMENT_NAME=$AZURE_DEPLOYMENT_NAME
+OPENAI_API_KEY=$OPENAI_API_KEY
+TEST_ENVIRONMENT=$TEST_ENVIRONMENT
+SEMANTIC_THRESHOLD=$SEMANTIC_THRESHOLD
+MAX_RETRIES=$MAX_RETRIES
+TEST_TIMEOUT=$TEST_TIMEOUT
+EOF
+                    echo ".env file created with environment variables"
                 '''
             }
         }
@@ -33,15 +45,6 @@ pipeline {
                 '''
             }
         }
-        
-//         stage('Validate Configuration') {
-//             steps {
-//                 sh '''
-//                     echo "Validating test configuration..."
-//                     docker-compose run --rm promptfoo-shell promptfoo eval -c configs/promptfoo.yaml --dry-run
-//                 '''
-//             }
-//         }
         
         stage('Run E2E Tests') {
             steps {
