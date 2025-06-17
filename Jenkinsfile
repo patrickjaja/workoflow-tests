@@ -48,25 +48,52 @@ EOF
         
         stage('Run E2E Tests') {
             steps {
-                sh '''
-                    echo "Running E2E tests..."
-                    docker-compose run --rm promptfoo-shell promptfoo eval -c configs/promptfoo.yaml --no-cache -o test-results/output.html
-                '''
-            }
-        }
-        
-        stage('Generate Test Report') {
-            steps {
-                sh '''
-                    echo "Exporting test results..."
-                    docker-compose run --rm promptfoo-shell promptfoo export -o test-results/report.html
-                '''
-                
-                // Archive test results
-                archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
-                
-                // Publish test results if JUnit format is available
-                junit allowEmptyResults: true, testResults: 'test-results/**/*.xml'
+                script {
+                    def testExitCode = sh(
+                        script: '''
+                            echo "Running E2E tests..."
+                            docker-compose run --rm promptfoo-shell promptfoo eval -c configs/promptfoo.yaml --no-cache -o test-results/output.html -o test-results/output.json -o test-results/output.junit.xml
+                        ''',
+                        returnStatus: true
+                    )
+                    
+                    // Store exit code for later use
+                    env.TEST_EXIT_CODE = "${testExitCode}"
+                    
+                    // Always try to generate reports, even if tests fail
+                    sh '''
+                        echo "Test execution completed with exit code: ${TEST_EXIT_CODE}"
+                        
+                        # Try to generate additional report formats
+                        if [ -f test-results/output.json ]; then
+                            echo "JSON output generated successfully"
+                        fi
+                    '''
+                    
+                    // Archive results immediately after tests
+                    archiveArtifacts artifacts: 'test-results/**/*', allowEmptyArchive: true
+                    
+                    // Publish HTML report if HTML Publisher plugin is installed
+                    catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+                        publishHTML(target: [
+                            allowMissing: false,
+                            alwaysLinkToLastBuild: true,
+                            keepAll: true,
+                            reportDir: 'test-results',
+                            reportFiles: 'output.html',
+                            reportName: 'Promptfoo Test Report',
+                            reportTitles: 'E2E Test Results'
+                        ])
+                    }
+                    
+                    // Publish JUnit results for Jenkins native test reporting
+                    junit allowEmptyResults: true, testResults: 'test-results/**/*.junit.xml'
+                    
+                    // Fail the build if tests failed
+                    if (testExitCode != 0) {
+                        error("E2E tests failed with exit code: ${testExitCode}")
+                    }
+                }
             }
         }
     }
