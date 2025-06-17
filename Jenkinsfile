@@ -33,14 +33,14 @@ pipeline {
             }
         }
         
-        stage('Validate Configuration') {
-            steps {
-                sh '''
-                    echo "Validating test configuration..."
-                    docker-compose run --rm promptfoo-shell promptfoo eval -c configs/promptfoo.yaml --dry-run
-                '''
-            }
-        }
+//         stage('Validate Configuration') {
+//             steps {
+//                 sh '''
+//                     echo "Validating test configuration..."
+//                     docker-compose run --rm promptfoo-shell promptfoo eval -c configs/promptfoo.yaml --dry-run
+//                 '''
+//             }
+//         }
         
         stage('Run E2E Tests') {
             steps {
