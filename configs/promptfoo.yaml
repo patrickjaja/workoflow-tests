@@ -196,7 +196,7 @@ tests:
           
           Required elements:
           1. Explains the ticket (PRYMSW-57) is about extending password reset link validity for bulk B2B customer emails
-          2. Provides quality rating of 6/10 (or similar score with justification)
+          2. Provides quality rating between 4/10 and 7/10 (or similar score with justification)
           3. Identifies strengths (clear summary) and weaknesses (missing details, no acceptance criteria, unclear test requirements)
           4. Provides specific improvement suggestions including:
              - Add detailed description with time extensions (e.g., from 1 to 24 hours)
