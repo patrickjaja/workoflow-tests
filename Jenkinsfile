@@ -52,7 +52,7 @@ EOF
                     def testExitCode = sh(
                         script: '''
                             echo "Running E2E tests..."
-                            docker-compose run --rm promptfoo-shell promptfoo eval -c configs/promptfoo.yaml --no-cache -o test-results/output.html -o test-results/output.json -o test-results/output.junit.xml
+                            docker-compose run --rm promptfoo-shell promptfoo eval -c configs/promptfoo.yaml --no-cache -o test-results/output.html -o test-results/output.json
                         ''',
                         returnStatus: true
                     )
@@ -86,8 +86,13 @@ EOF
                         ])
                     }
                     
-                    // Publish JUnit results for Jenkins native test reporting
-                    junit allowEmptyResults: true, testResults: 'test-results/**/*.junit.xml'
+                    // Parse JSON output to create simple test summary
+                    sh '''
+                        if [ -f test-results/output.json ]; then
+                            echo "Test results summary:"
+                            docker-compose run --rm promptfoo-shell sh -c "cat test-results/output.json | jq -r '.summary | \"Pass Rate: \\(.stats.passRate)%, Passed: \\(.stats.successes), Failed: \\(.stats.failures)\"' || echo 'Unable to parse test summary'"
+                        fi
+                    '''
                     
                     // Fail the build if tests failed
                     if (testExitCode != 0) {
