@@ -37,7 +37,7 @@ pipeline {
             steps {
                 sh '''
                     echo "Validating test configuration..."
-                    docker-compose run --rm promptfoo-shell npm run test:dry-run
+                    docker-compose run --rm promptfoo-shell promptfoo eval -c configs/promptfoo.yaml --dry-run
                 '''
             }
         }
@@ -46,7 +46,7 @@ pipeline {
             steps {
                 sh '''
                     echo "Running E2E tests..."
-                    docker-compose run --rm promptfoo-shell npm run test:e2e
+                    docker-compose run --rm promptfoo-shell promptfoo eval -c configs/promptfoo.yaml --no-cache -o test-results/output.html
                 '''
             }
         }
@@ -55,7 +55,7 @@ pipeline {
             steps {
                 sh '''
                     echo "Exporting test results..."
-                    docker-compose run --rm promptfoo-shell npm run test:export
+                    docker-compose run --rm promptfoo-shell promptfoo export -o test-results/report.html
                 '''
                 
                 // Archive test results
