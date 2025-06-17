@@ -2,17 +2,7 @@ pipeline {
     agent none
     
     environment {
-        // Azure OpenAI credentials
-        AZURE_API_KEY = credentials('azure-api-key')
-        AZURE_API_HOST = credentials('azure-api-host')
-        AZURE_API_VERSION = credentials('azure-api-version')
-        AZURE_DEPLOYMENT_NAME = credentials('azure-deployment-name')
-        
-        // n8n webhook configuration
-        N8N_WEBHOOK_URL = credentials('n8n-webhook-url')
-        N8N_BASIC_AUTH_ENCODED = credentials('n8n-basic-auth-encoded')
-
-        // Test configuration
+        // Test configuration (other vars are inherited from Jenkins job config)
         SEMANTIC_THRESHOLD = '0.8'
         TEST_TIMEOUT = '30000'
     }
