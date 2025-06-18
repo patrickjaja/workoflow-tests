@@ -52,7 +52,7 @@ EOF
                     def testExitCode = sh(
                         script: '''
                             echo "Running E2E tests..."
-                            docker-compose run --rm promptfoo-shell promptfoo eval -c configs/promptfoo.yaml --no-cache -o test-results/output.html -o test-results/output.json
+                            docker-compose run --rm promptfoo-shell promptfoo eval -c configs/promptfoo.config.js --no-cache -o test-results/output.html -o test-results/output.json
                         ''',
                         returnStatus: true
                     )
