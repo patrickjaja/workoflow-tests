@@ -9,7 +9,7 @@ RUN apk add --no-cache bash curl jq vim
 COPY package*.json ./
 
 # Install dependencies inside container
-RUN npm install && npm install -g promptfoo@^0.114.7
+RUN npm install && npm install -g promptfoo@^0.119.5
 
 # Create directories
 RUN mkdir -p /app/test-results /app/test-data /app/configs /app/scripts /app/n8n_example_requests

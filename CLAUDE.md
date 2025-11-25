@@ -16,6 +16,24 @@ This is an E2E testing framework for an n8n webhook agent that uses semantic val
 - **Azure OpenAI**: Semantic validation (gpt-4o-mini)
 - **Docker**: Containerization
 - **n8n**: Webhook agent being tested
+- **ESLint**: Static code analysis (v9 flat config)
+
+## Linting (REQUIRED before commits)
+
+**RULE: Always run linting before committing code changes.**
+
+```bash
+# Check for linting errors
+npm run lint
+
+# Auto-fix linting errors where possible
+npm run lint:fix
+```
+
+The project uses ESLint 9 with:
+- Node.js environment globals
+- Security plugin (eslint-plugin-security) for vulnerability detection
+- Flat config format (eslint.config.js)
 
 ## Testing Workflow After Adding Features
 
@@ -130,6 +148,7 @@ SEMANTIC_THRESHOLD=0.9 docker-compose run promptfoo-shell
 3. **Assertions**: Always include both exact and semantic validations
 4. **Documentation**: Update implementation checklist when adding features
 5. **Security**: Never commit `.env` file or expose API keys
+6. **Linting**: Always run `npm run lint` before committing - fix all errors
 
 ## Environment Variables
 
@@ -166,6 +185,10 @@ Key environment variables to be aware of:
 # Setup
 cp .env.example .env
 npm run docker:build
+
+# Lint (ALWAYS before commit)
+npm run lint
+npm run lint:fix
 
 # Run tests
 npm run test:e2e

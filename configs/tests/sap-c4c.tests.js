@@ -1,4 +1,4 @@
-const { createTestCase, createTestCaseWithAsserts } = require('./common');
+const { createTestCaseWithAsserts } = require('./common');
 
 const sapC4cTests = [
   createTestCaseWithAsserts({

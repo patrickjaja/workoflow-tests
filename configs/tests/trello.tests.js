@@ -1,4 +1,4 @@
-const { createTestCase, createTestCaseWithAsserts } = require('./common');
+const { createTestCase } = require('./common');
 
 const trelloTests = [
   createTestCase({

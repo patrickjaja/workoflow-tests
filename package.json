@@ -2,6 +2,7 @@
   "name": "n8n-agent-e2e-tests",
   "version": "1.0.0",
   "description": "E2E testing suite for n8n webhook agent with semantic validation",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test:e2e": "docker-compose run promptfoo-shell promptfoo eval -c configs/promptfoo.config.js --no-cache -o test-results/output.html",
@@ -18,7 +19,9 @@
     "docker:logs": "docker-compose logs -f promptfoo-shell",
     "docker:down": "docker-compose down",
     "docker:clean": "docker-compose down -v && rm -rf test-results/*",
-    "docker:shell": "docker-compose run promptfoo-shell sh"
+    "docker:shell": "docker-compose run promptfoo-shell sh",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "keywords": [
     "n8n",
@@ -30,9 +33,12 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "promptfoo": "^0.114.7"
+    "eslint": "^9.16.0",
+    "eslint-plugin-security": "^3.0.1",
+    "globals": "^15.13.0",
+    "promptfoo": "^0.119.5"
   },
   "dependencies": {
-    "dotenv": "^16.3.1"
+    "dotenv": "^17.2.3"
   }
 }
