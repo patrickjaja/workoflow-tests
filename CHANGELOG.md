@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Upgraded promptfoo from 0.114.7 to 0.119.5
 - Upgraded dotenv from 16.3.1 to 17.2.3
 - Package.json now uses ES modules (`"type": "module"`)
+- Converted all test files and config from CommonJS to ES modules syntax
 - Fixed unused imports in sap-c4c.tests.js and trello.tests.js
 
 ## [2025-11-25]

@@ -1,4 +1,4 @@
-const { createTestCase, createTestCaseWithAsserts } = require('./common');
+import { createTestCase, createTestCaseWithAsserts } from './common.js';
 
 const gitlabTests = [
   createTestCaseWithAsserts({
@@ -27,4 +27,4 @@ const gitlabTests = [
   })
 ];
 
-module.exports = gitlabTests;
+export default gitlabTests;

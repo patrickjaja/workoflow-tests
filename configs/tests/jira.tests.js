@@ -1,4 +1,4 @@
-const { createTestCase, createTestCaseWithAsserts } = require('./common');
+import { createTestCase, createTestCaseWithAsserts } from './common.js';
 
 const jiraTests = [
   createTestCaseWithAsserts({
@@ -43,4 +43,4 @@ const jiraTests = [
   })
 ];
 
-module.exports = jiraTests;
+export default jiraTests;

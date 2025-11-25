@@ -1,6 +1,6 @@
 // Shared test helpers for promptfoo multi-agent testing
 
-const createLLMRubric = (requirements) => ({
+export const createLLMRubric = (requirements) => ({
   type: 'llm-rubric',
   provider: {
     id: 'azure:chat:gpt-4o-mini'
@@ -8,7 +8,7 @@ const createLLMRubric = (requirements) => ({
   value: requirements
 });
 
-const createTestCase = ({ description, query, locale = 'de-DE', messageId, requirements }) => ({
+export const createTestCase = ({ description, query, locale = 'de-DE', messageId, requirements }) => ({
   description,
   vars: {
     query,
@@ -20,7 +20,7 @@ const createTestCase = ({ description, query, locale = 'de-DE', messageId, requi
 });
 
 // Helper for tests with additional deterministic assertions
-const createTestCaseWithAsserts = ({ description, query, locale = 'de-DE', messageId, requirements, additionalAsserts = [] }) => ({
+export const createTestCaseWithAsserts = ({ description, query, locale = 'de-DE', messageId, requirements, additionalAsserts = [] }) => ({
   description,
   vars: {
     query,
@@ -30,9 +30,3 @@ const createTestCaseWithAsserts = ({ description, query, locale = 'de-DE', messa
   },
   assert: [createLLMRubric(requirements), ...additionalAsserts]
 });
-
-module.exports = {
-  createLLMRubric,
-  createTestCase,
-  createTestCaseWithAsserts
-};

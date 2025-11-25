@@ -1,4 +1,4 @@
-const { createTestCase } = require('./common');
+import { createTestCase } from './common.js';
 
 const confluenceTests = [
   createTestCase({
@@ -13,4 +13,4 @@ const confluenceTests = [
   })
 ];
 
-module.exports = confluenceTests;
+export default confluenceTests;

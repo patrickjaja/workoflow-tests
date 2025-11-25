@@ -1,4 +1,4 @@
-const { createTestCaseWithAsserts } = require('./common');
+import { createTestCaseWithAsserts } from './common.js';
 
 const sapC4cTests = [
   createTestCaseWithAsserts({
@@ -16,4 +16,4 @@ const sapC4cTests = [
   })
 ];
 
-module.exports = sapC4cTests;
+export default sapC4cTests;

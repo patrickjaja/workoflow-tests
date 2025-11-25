@@ -2,17 +2,17 @@
 // Multi-agent testing suite - tests split per agent
 
 // Import test cases from separate files
-const mainAgentTests = require('./tests/main-agent.tests');
-const systemToolsTests = require('./tests/system-tools.tests');
-const jiraTests = require('./tests/jira.tests');
-const sharepointTests = require('./tests/sharepoint.tests');
-const confluenceTests = require('./tests/confluence.tests');
-const gitlabTests = require('./tests/gitlab.tests');
-const trelloTests = require('./tests/trello.tests');
-const sapC4cTests = require('./tests/sap-c4c.tests');
+import mainAgentTests from './tests/main-agent.tests.js';
+import systemToolsTests from './tests/system-tools.tests.js';
+import jiraTests from './tests/jira.tests.js';
+import sharepointTests from './tests/sharepoint.tests.js';
+import confluenceTests from './tests/confluence.tests.js';
+import gitlabTests from './tests/gitlab.tests.js';
+import trelloTests from './tests/trello.tests.js';
+import sapC4cTests from './tests/sap-c4c.tests.js';
 
 // Re-export common helpers for backward compatibility
-const { createLLMRubric, createTestCase, createTestCaseWithAsserts } = require('./tests/common');
+import { createLLMRubric, createTestCase, createTestCaseWithAsserts } from './tests/common.js';
 
 // Aggregate all tests
 const allTests = [
@@ -27,7 +27,7 @@ const allTests = [
 ];
 
 // Main configuration export
-module.exports = {
+export default {
   providers: [
     {
       id: 'http',
@@ -74,16 +74,16 @@ module.exports = {
 };
 
 // Export helpers for external use
-module.exports.createTestCase = createTestCase;
-module.exports.createLLMRubric = createLLMRubric;
-module.exports.createTestCaseWithAsserts = createTestCaseWithAsserts;
+export { createTestCase, createLLMRubric, createTestCaseWithAsserts };
 
 // Export individual test arrays for selective running
-module.exports.mainAgentTests = mainAgentTests;
-module.exports.systemToolsTests = systemToolsTests;
-module.exports.jiraTests = jiraTests;
-module.exports.sharepointTests = sharepointTests;
-module.exports.confluenceTests = confluenceTests;
-module.exports.gitlabTests = gitlabTests;
-module.exports.trelloTests = trelloTests;
-module.exports.sapC4cTests = sapC4cTests;
+export {
+  mainAgentTests,
+  systemToolsTests,
+  jiraTests,
+  sharepointTests,
+  confluenceTests,
+  gitlabTests,
+  trelloTests,
+  sapC4cTests
+};

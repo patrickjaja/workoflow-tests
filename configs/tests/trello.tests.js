@@ -1,4 +1,4 @@
-const { createTestCase } = require('./common');
+import { createTestCase } from './common.js';
 
 const trelloTests = [
   createTestCase({
@@ -13,4 +13,4 @@ const trelloTests = [
   })
 ];
 
-module.exports = trelloTests;
+export default trelloTests;

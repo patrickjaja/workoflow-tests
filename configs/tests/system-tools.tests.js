@@ -1,4 +1,4 @@
-const { createTestCase } = require('./common');
+import { createTestCase } from './common.js';
 
 const systemToolsTests = [
   // Removed system-test-001 (vacation policy) - KB content doesn't exist
@@ -38,4 +38,4 @@ const systemToolsTests = [
   })
 ];
 
-module.exports = systemToolsTests;
+export default systemToolsTests;

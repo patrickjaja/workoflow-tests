@@ -1,4 +1,4 @@
-const { createTestCase } = require('./common');
+import { createTestCase } from './common.js';
 
 const mainAgentTests = [
   // Keep test-msg-003 - E-commerce system selection (PASSING)
@@ -81,4 +81,4 @@ const mainAgentTests = [
   })
 ];
 
-module.exports = mainAgentTests;
+export default mainAgentTests;

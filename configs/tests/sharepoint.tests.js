@@ -1,4 +1,4 @@
-const { createTestCase, createTestCaseWithAsserts } = require('./common');
+import { createTestCase, createTestCaseWithAsserts } from './common.js';
 
 const sharepointTests = [
   createTestCaseWithAsserts({
@@ -28,4 +28,4 @@ const sharepointTests = [
   })
 ];
 
-module.exports = sharepointTests;
+export default sharepointTests;
