@@ -34,7 +34,7 @@ const jiraTests = [
 
   createTestCase({
     description: "JIRA: Get sprint information",
-    query: "Welche Tickets sind im aktuellen Sprint des Projekts GH?",
+    query: "Welche Tickets sind im aktuellen Sprint des Projekts GH? https://nexus-netsoft.atlassian.net/jira/software/c/projects/GH/boards/1136/backlog",
     messageId: "jira-test-003",
     requirements: `The response should:
       1. Provide sprint tickets OR indicate no active sprint OR explain temporary issues
