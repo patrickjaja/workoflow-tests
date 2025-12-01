@@ -28,6 +28,12 @@ const allTests = [
 
 // Main configuration export
 export default {
+  // Evaluation settings for rate limiting
+  evaluateOptions: {
+    maxConcurrency: 2,  // Reduce parallel requests to avoid rate limits
+    delay: 5000,        // 5 second delay between test cases
+  },
+
   providers: [
     {
       id: 'http',
@@ -63,7 +69,12 @@ export default {
           locale: '{{locale}}',
           localTimezone: 'Europe/Berlin'
         },
-        transformResponse: 'json.response || json.text || json'
+        transformResponse: 'json.response || json.text || json',
+        // Retry configuration for rate limiting
+        retry: {
+          maxRetries: 3,
+          retryDelayMs: 10000,  // 10 second wait between retries
+        }
       }
     }
   ],

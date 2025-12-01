@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2025-12-01]
+
+### Added
+- Rate limiting configuration in promptfoo.config.js (maxConcurrency: 2, delay: 5s)
+- Retry configuration for HTTP provider (3 retries, 10s delay)
+
+### Changed
+- Simplified gitlab-test-002 assertions for more flexible pipeline status responses
+- Simplified sap-c4c-test-001 assertions using case-insensitive matching
+
 ## [2025-11-26]
 
 ### Added
