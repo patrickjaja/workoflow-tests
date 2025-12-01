@@ -7,22 +7,21 @@ const sapC4cTests = [
     messageId: "sap-c4c-test-001",
     requirements: `Response should:
       1. Return exactly 3 leads from SAP C4C
-      2. Include lead details: LeadID, ObjectID, Name/Betreff, Account/Firma, Lead-Status
+      2. Include lead details: Lead-Name, Lead-Nummer, Status, Firma
       3. Include creation date (Erstellungsdatum)
-      4. Include contact information fields (E-Mail, Telefon)
-      5. Include Detail-URL for each lead
-      6. Mention sorting by CreationDateTime (descending)
-      7. Be in German language
-      8. Indicate pagination status (has_more, next_skip)`,
+      4. Include contact information: Ansprechpartner, E-Mail, Telefon, Adresse
+      5. Include creator (Erstellt von)
+      6. Be in German language`,
     additionalAsserts: [
       { type: 'not-contains', value: 'Fehler' },
-      { type: 'contains', value: 'LeadID' },
-      { type: 'contains', value: 'ObjectID' },
-      { type: 'contains', value: 'Lead-Status' },
+      { type: 'contains', value: 'Lead-Name' },
+      { type: 'contains', value: 'Lead-Nummer' },
+      { type: 'contains', value: 'Status' },
       { type: 'contains', value: 'Erstellungsdatum' },
-      { type: 'contains', value: 'Detail-URL' },
-      { type: 'contains', value: 'Kontakt' },
-      { type: 'javascript', value: '(output) => output.match(/LeadID.*?\\d+/g)?.length === 3' }
+      { type: 'contains', value: 'Firma' },
+      { type: 'contains', value: 'E-Mail' },
+      { type: 'contains', value: 'Telefon' },
+      { type: 'javascript', value: '(output) => output.match(/Lead-Nummer.*?\\d+/g)?.length === 3' }
     ]
   })
 ];
